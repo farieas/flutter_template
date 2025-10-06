@@ -16,13 +16,10 @@
     flutter create myapp --platforms=android,web
     
     # Create the output directory if it doesn't exist
-    mkdir -p "$out"
+    mv "myapp" "$out"
     
     # Move the created project to the output directory
     echo "Setting up project structure..."
-    mv myapp/* "$out/"
-    mv myapp/.* "$out/" 2>/dev/null || true
-    rmdir myapp
     
     # Create .idx directory in the project root
     mkdir -p "$out/.idx"
@@ -38,3 +35,4 @@
     echo "📱 Your Flutter project is ready for development"
   '';
 }
+
