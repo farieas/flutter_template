@@ -16,7 +16,10 @@
     flutter create "$out" --platforms=ios,android,web
     
     # Create .idx directory if it doesn't exist
-    mkdir -p .idx
+    mkdir -p "$out/.idx"
+
+    # Ensure proper permissions
+    chmod -R u+w "$out"
     
     # Copy dev.nix configuration
     echo "Setting up IDX environment..."
