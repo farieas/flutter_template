@@ -1,8 +1,6 @@
 {
     "name": "Flutter Template",
     "description": "A custom Flutter template integrated with Firebase SDKs and Nix environment.",
-    "language": "dart",
-    "framework": "flutter",
     "category": [
         "mobile"
     ],
