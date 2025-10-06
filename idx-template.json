@@ -1,0 +1,11 @@
+{
+    "name": "Flutter Template",
+    "description": "A custom Flutter template integrated with Firebase SDKs and Nix environment.",
+    "language": "dart",
+    "framework": "flutter",
+    "category": [
+        "mobile"
+    ],
+    "publisher": "Google LLC",
+    "icon": "https://www.gstatic.com/images/branding/productlogos/flutter/v6/192px.svg"
+}
