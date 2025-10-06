@@ -4,7 +4,6 @@
 
   packages = [
     pkgs.flutter
-    pkgs.dart
     pkgs.git
     pkgs.jdk21
   ];
@@ -14,19 +13,23 @@
     echo "Creating Flutter project..."
     flutter create myapp --platforms=android,web
     
-    
-    # Move the created project to the output directory
+    # Copy all files from myapp to output directory
     echo "Setting up project structure..."
+    cp -r myapp/* "$out/"
+    cp -r myapp/.* "$out/" 2>/dev/null || true
+    
+    # Clean up temporary directory
+    rm -rf myapp
     
     # Create .idx directory in the project root
-    mkdir -p "myapp/.idx"
+    echo "Setting up IDX environment..."
+    mkdir -p "$out/.idx"
     
     # Copy dev.nix configuration to the project's .idx folder
-    echo "Setting up IDX environment..."
-    cp ${./dev.nix} "myapp/.idx/dev.nix"
+    cp ${./dev.nix} "$out/.idx/dev.nix"
 
     # Ensure proper permissions
-    chmod -R u+w "myapp"
+    chmod -R u+w "$out"
 
     echo "✅ Flutter template setup complete!"
     echo "📱 Your Flutter project is ready for development"
