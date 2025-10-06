@@ -15,6 +15,9 @@
     echo "Creating Flutter project..."
     flutter create myapp --platforms=android,web
     
+    # Create the output directory if it doesn't exist
+    mkdir -p "$out"
+    
     # Move the created project to the output directory
     echo "Setting up project structure..."
     mv myapp/* "$out/"
