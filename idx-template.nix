@@ -13,10 +13,10 @@
   bootstrap = ''
     # Create new Flutter project with static name
     echo "Creating Flutter project..."
-    flutter create MyAPP --platforms=android,web
+    flutter create myapp --platforms=android,web
     
     # Navigate to the project directory
-    cd MyAPP
+    cd myapp
     
     # Create .idx directory in the project root
     mkdir -p .idx
@@ -29,6 +29,6 @@
     chmod -R u+w .
     
     echo "✅ Flutter template setup complete!"
-    echo "📱 Your Flutter project 'MyAPP' is ready for development"
+    echo "📱 Your Flutter project 'myapp' is ready for development"
   '';
 }
