@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  channel = "stable-24.05";
+  channel = "stable-25.05";
 
   packages = [
     pkgs.flutter
@@ -11,24 +11,24 @@
   ];
 
   bootstrap = ''
-    # Create new Flutter project
+    # Create new Flutter project with static name
     echo "Creating Flutter project..."
-    flutter create "$out" --platforms=ios,android,web
+    flutter create MyAPP --platforms=android,web
     
-    # Create .idx directory if it doesn't exist
-    mkdir -p "$out/.idx"
-
-    # Ensure proper permissions
-    chmod -R u+w "$out"
+    # Navigate to the project directory
+    cd MyAPP
     
-    # Copy dev.nix configuration
+    # Create .idx directory in the project root
+    mkdir -p .idx
+    
+    # Copy dev.nix configuration to the project's .idx folder
     echo "Setting up IDX environment..."
-    cp ${./dev.nix} "$out/.idx/dev.nix"
+    cp ${./dev.nix} .idx/dev.nix
     
     # Ensure proper permissions
-    chmod -R u+w "$out"
+    chmod -R u+w .
     
     echo "✅ Flutter template setup complete!"
-    echo "📱 Your Flutter project is ready for development"
+    echo "📱 Your Flutter project 'MyAPP' is ready for development"
   '';
 }
