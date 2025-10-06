@@ -15,11 +15,8 @@
     
     # Copy all files from myapp to output directory
     echo "Setting up project structure..."
-    cp -r myapp/* "$out/"
-    cp -r myapp/.* "$out/" 2>/dev/null || true
-    
-    # Clean up temporary directory
-    rm -rf myapp
+
+    mv "myapp" "$out/"
     
     # Create .idx directory in the project root
     echo "Setting up IDX environment..."
@@ -27,6 +24,7 @@
     
     # Copy dev.nix configuration to the project's .idx folder
     cp ${./dev.nix} "$out/.idx/dev.nix"
+
 
     # Ensure proper permissions
     chmod -R u+w "$out"
