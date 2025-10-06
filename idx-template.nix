@@ -13,7 +13,7 @@
   bootstrap = ''
     # Create new Flutter project
     echo "Creating Flutter project..."
-    flutter create "#out" --platforms=ios,android,web
+    flutter create "$out" --platforms=ios,android,web
     
     # Create .idx directory if it doesn't exist
     mkdir -p .idx
