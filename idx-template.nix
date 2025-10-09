@@ -5,35 +5,30 @@
   packages = [
     pkgs.git
     pkgs.jdk21
-    pkgs.coreutils      # for basic shell commands like mkdir, chmod, command
-    pkgs.makeWrapper    # needed to wrap flutter binary
+    pkgs.coreutils  # basic shell commands
   ];
 
   bootstrap = ''
-    echo "Setting up local Flutter SDK inside Nix shell..."
+    echo "Setting up local Flutter SDK..."
 
-    # Path to your local Flutter
-    FLUTTER_HOME=$HOME/flutter
-    export PATH=$FLUTTER_HOME/bin:$HOME/.pub-cache/bin:$PATH
+    # Prepend local Flutter and pub-cache to PATH
+    export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
 
-    # Wrap flutter to make it accessible in Nix environment
-    if [ ! -f "$FLUTTER_HOME/bin/flutter_wrapped" ]; then
-      echo "Wrapping Flutter binary..."
-      ${pkgs.makeWrapper}/bin/makeWrapper $FLUTTER_HOME/bin/flutter $FLUTTER_HOME/bin/flutter_wrapped \
-        --prefix PATH : "$FLUTTER_HOME/bin"
+    # Check if Flutter exists
+    if ! command -v flutter >/dev/null 2>&1; then
+      echo "❌ Error: Flutter binary not found in \$HOME/flutter/bin"
+      echo "Please install Flutter locally or adjust the PATH."
+      exit 1
     fi
-
-    # Use the wrapped binary
-    export PATH=$FLUTTER_HOME/bin:$PATH
 
     # Verify Flutter
     echo "Flutter path being used:"
-    command -v flutter_wrapped
-    flutter_wrapped --version
+    command -v flutter
+    flutter --version
 
     # Create new Flutter project with static name
     echo "Creating Flutter project..."
-    flutter_wrapped create "$out" --platforms=android,web
+    flutter create "$out" --platforms=android,web
 
     # Create .idx directory in the project root
     echo "Setting up IDX environment..."
