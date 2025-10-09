@@ -11,12 +11,13 @@
   bootstrap = ''
     # Create new Flutter project with static name
     echo "Creating Flutter project..."
-    flutter create myapp --platforms=android,web
+    flutter create my_app --platforms=android,web
     
-    # Copy all files from myapp to output directory
-    echo "Setting up project structure..."
-
-    mv "myapp" "$out/"
+    # Move the contents of my_app to the output directory
+    cp -r my_app/* "$out/"
+    cp -r my_app/.* "$out/" 2>/dev/null || true
+    rm -rf my_app
+    
     
     # Create .idx directory in the project root
     echo "Setting up IDX environment..."
