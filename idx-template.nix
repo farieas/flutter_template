@@ -5,39 +5,42 @@
   packages = [
     pkgs.git
     pkgs.jdk21
-    pkgs.coreutils  # basic shell commands
+    pkgs.coreutils
   ];
 
   bootstrap = ''
-    echo "Setting up local Flutter SDK..."
+    echo "Setting up Flutter environment..."
 
-    # Prepend local Flutter and pub-cache to PATH
-    export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
+    FLUTTER_HOME=$HOME/flutter
 
-    # Check if Flutter exists
+    # Clone Flutter if it doesn't exist
+    if [ ! -d "$FLUTTER_HOME" ]; then
+      echo "Flutter not found at $FLUTTER_HOME. Cloning stable Flutter SDK..."
+      git clone https://github.com/flutter/flutter.git -b stable "$FLUTTER_HOME"
+    else
+      echo "Flutter already exists at $FLUTTER_HOME"
+    fi
+
+    # Add Flutter and pub-cache to PATH
+    export PATH=$FLUTTER_HOME/bin:$HOME/.pub-cache/bin:$PATH
+
+    # Verify Flutter
     if ! command -v flutter >/dev/null 2>&1; then
-      echo "❌ Error: Flutter binary not found in \$HOME/flutter/bin"
-      echo "Please install Flutter locally or adjust the PATH."
+      echo "❌ Flutter binary still not found in $FLUTTER_HOME/bin"
       exit 1
     fi
 
-    # Verify Flutter
     echo "Flutter path being used:"
     command -v flutter
     flutter --version
 
-    # Create new Flutter project with static name
+    # Create new Flutter project
     echo "Creating Flutter project..."
     flutter create "$out" --platforms=android,web
 
-    # Create .idx directory in the project root
-    echo "Setting up IDX environment..."
+    # Setup .idx folder
     mkdir -p "$out/.idx"
-
-    # Copy dev.nix configuration to the project's .idx folder
     cp ${./dev.nix} "$out/.idx/dev.nix"
-
-    # Ensure proper permissions
     chmod -R u+w "$out"
 
     echo "✅ Flutter template setup complete!"
