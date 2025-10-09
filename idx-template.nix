@@ -6,6 +6,7 @@
     pkgs.git
     pkgs.jdk21
     pkgs.coreutils
+    pkgs.curl
   ];
 
   bootstrap = ''
