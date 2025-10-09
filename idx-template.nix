@@ -8,6 +8,7 @@
     pkgs.coreutils
     pkgs.curl
     pkgs.unzip
+    pkgs.xz 
   ];
 
   bootstrap = ''
@@ -26,23 +27,25 @@
     # Add Flutter and pub-cache to PATH
     export PATH=$FLUTTER_HOME/bin:$HOME/.pub-cache/bin:$PATH
 
-    # Verify Flutter
-    if ! command -v flutter >/dev/null 2>&1; then
-      echo "❌ Flutter binary still not found in $FLUTTER_HOME/bin"
+    # Run flutter doctor to populate cache and verify installation
+    echo "Initializing Flutter SDK..."
+    flutter doctor -v
+
+    if [ $? -ne 0 ]; then
+      echo "❌ Flutter initialization failed. Make sure the SDK is complete and accessible."
       exit 1
     fi
-
-    echo "Flutter path being used:"
-    command -v flutter
-    flutter --version
 
     # Create new Flutter project
     echo "Creating Flutter project..."
     flutter create "$out" --platforms=android,web
 
     # Setup .idx folder
+    echo "Setting up IDX environment..."
     mkdir -p "$out/.idx"
     cp ${./dev.nix} "$out/.idx/dev.nix"
+
+    # Ensure proper permissions
     chmod -R u+w "$out"
 
     echo "✅ Flutter template setup complete!"
