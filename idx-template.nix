@@ -7,6 +7,7 @@
     pkgs.jdk21
     pkgs.coreutils
     pkgs.curl
+    pkgs.unzip
   ];
 
   bootstrap = ''
