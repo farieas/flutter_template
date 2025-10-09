@@ -27,13 +27,21 @@
     # Add Flutter and pub-cache to PATH
     export PATH=$FLUTTER_HOME/bin:$HOME/.pub-cache/bin:$PATH
 
+    # Precache Flutter artifacts to ensure Dart SDK and tools are downloaded
+    echo "Downloading Flutter artifacts and Dart SDK..."
+    flutter precache --web --android --no-ios --no-macos --no-linux --no-windows --no-fuchsia
+    
+    if [ $? -ne 0 ]; then
+      echo "❌ Flutter precache failed. Retrying..."
+      flutter precache --web --android --no-ios --no-macos --no-linux --no-windows --no-fuchsia
+    fi
+
     # Run flutter doctor to populate cache and verify installation
     echo "Initializing Flutter SDK..."
     flutter doctor -v
 
     if [ $? -ne 0 ]; then
-      echo "❌ Flutter initialization failed. Make sure the SDK is complete and accessible."
-      exit 1
+      echo "⚠️  Flutter doctor reported issues, but continuing setup..."
     fi
 
     # Create new Flutter project
